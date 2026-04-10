@@ -4,6 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseRepository {
+  FirebaseRepository._();
+  static FirebaseRepository getInstance() => FirebaseRepository._();
+
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
   static final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -19,6 +22,7 @@ class FirebaseRepository {
       UserCredential userCred = await firebaseAuth
           .createUserWithEmailAndPassword(email: user.email!, password: pass);
       if (userCred.user != null) {
+        user.userId=userCred.user!.uid;
         await firestore
             .collection(COLLECTION_USERS)
             .doc(userCred.user!.uid)
@@ -53,8 +57,6 @@ class FirebaseRepository {
         prefs.setString(PREFS_USER_ID_KEY, userCred.user!.uid);
       }
     } on FirebaseAuthException catch (e) {
-
-      /// 🔐 Secure + Clean handling
       if (e.code == 'user-not-found' ||
           e.code == 'wrong-password' ||
           e.code == 'invalid-credential') {
@@ -72,4 +74,7 @@ class FirebaseRepository {
       throw "Something went wrong";
     }
   }
+  Future<QuerySnapshot<Map<String,dynamic>>> getAllContacts(){
+    return firestore.collection(COLLECTION_USERS).get();
   }
+}

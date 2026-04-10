@@ -12,8 +12,8 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options:DefaultFirebaseOptions.currentPlatform);
   runApp(MultiBlocProvider(providers: [
-    BlocProvider(create: (_)=>SignUpCubit(firebaseRepository: FirebaseRepository())),
-    BlocProvider(create: (_)=>LoginCubit(firebaseRepository: FirebaseRepository())),
+    BlocProvider(create: (_)=>SignUpCubit(firebaseRepository: FirebaseRepository.getInstance())),
+    BlocProvider(create: (_)=>LoginCubit(firebaseRepository: FirebaseRepository.getInstance())),
   ], child: MyApp()));
 }
 class MyApp extends StatelessWidget{
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.splash,
       routes: AppRoutes.getRoutes(),
     );
   }

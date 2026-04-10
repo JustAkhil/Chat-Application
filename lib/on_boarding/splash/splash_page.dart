@@ -47,7 +47,7 @@ class _SplashPageState extends State<SplashPage> {
                 width: 100,
                 height: 100,
                 child: Image.asset(
-                  '',
+                  'assets/ic_logo.png',
                   fit: BoxFit.contain,
                 ))),
       ),
