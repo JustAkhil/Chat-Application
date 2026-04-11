@@ -32,7 +32,7 @@ class AllMessagePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: (){
-        Navigator.pushReplacementNamed(context, AppRoutes.allContactsPage);
+        Navigator.pushNamed(context, AppRoutes.allContactsPage);
       }),
     );
   }

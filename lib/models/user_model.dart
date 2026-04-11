@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
 class UserModel {
   String? userId;
   String? name;
@@ -28,16 +26,16 @@ class UserModel {
 
   factory UserModel.fromDoc(Map<String, dynamic> document) {
     return UserModel(
-      userId: document['userId'],
-      createdAt: document['createdAt'],
-      name: document['name'],
-      email: document['email'],
-      mobNo: document['mobNo'],
-      gender: document['gender'],
-      isOnline: document['isOnline'],
-      status: document['status'],
-      profilePic: document['profilePic'],
-      profileStatus: document['profileStatus'],
+      userId: document['userId']??"",
+      createdAt: document['createdAt']??"",
+      name: document['name']??"",
+      email: document['email']??"",
+      mobNo: document['mobNo']??"",
+      gender: document['gender']??"",
+      isOnline: document['isOnline']??"",
+      status: document['status']??1,
+      profilePic: document['profilePic']??"",
+      profileStatus: document['profileStatus']??1,
     );
   }
 

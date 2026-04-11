@@ -8,15 +8,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'on_boarding/login/login_cubit/login_cubit.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options:DefaultFirebaseOptions.currentPlatform);
-  runApp(MultiBlocProvider(providers: [
-    BlocProvider(create: (_)=>SignUpCubit(firebaseRepository: FirebaseRepository.getInstance())),
-    BlocProvider(create: (_)=>LoginCubit(firebaseRepository: FirebaseRepository.getInstance())),
-  ], child: MyApp()));
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) =>
+              SignUpCubit(firebaseRepository: FirebaseRepository.getInstance()),
+        ),
+        BlocProvider(
+          create: (_) =>
+              LoginCubit(firebaseRepository: FirebaseRepository.getInstance()),
+        ),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
-class MyApp extends StatelessWidget{
+
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

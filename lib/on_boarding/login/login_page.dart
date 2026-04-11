@@ -49,6 +49,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 15),
                   TextFormField(
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    keyboardType: TextInputType.visiblePassword,
                     obscureText: isPassHidden,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
