@@ -16,7 +16,6 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  UserModel? currModel;
   FirebaseRepository firebaseRepository = FirebaseRepository.getInstance();
   List<MessageModel> listMsg = [];
   String fromId = "";
@@ -53,7 +52,12 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    currModel = ModalRoute.of(context)!.settings.arguments as UserModel;
+     UserModel? currModel = ModalRoute.of(context)!.settings.arguments as UserModel?;
+     if(currModel==null){
+       return Center(
+         child: CircularProgressIndicator(),
+       );
+     }
 
     return Scaffold(
       backgroundColor: const Color(0xff071018),
@@ -174,7 +178,7 @@ class _ChatPageState extends State<ChatPage> {
                                 radius: 23,
                                 backgroundColor: const Color(0xff132433),
                                 backgroundImage: currModel!.profilePic != ""
-                                    ? NetworkImage(currModel!.profilePic!)
+                                    ? NetworkImage(currModel.profilePic!)
                                     : const AssetImage("assets/ic_user.png")
                                 as ImageProvider,
                               ),
@@ -185,7 +189,7 @@ class _ChatPageState extends State<ChatPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    currModel!.name ?? "",
+                                    currModel.name ?? "",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
@@ -243,7 +247,7 @@ class _ChatPageState extends State<ChatPage> {
                     child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                       stream: firebaseRepository.getChatStream(
                         fromId: fromId,
-                        toId: currModel!.userId!,
+                        toId: currModel.userId!,
                       ),
                       builder: (_, snapshot) {
                         if (snapshot.connectionState ==
@@ -300,7 +304,7 @@ class _ChatPageState extends State<ChatPage> {
                             itemBuilder: (_, index) {
                               return listMsg[index].fromId == fromId
                                   ? userChatBox(listMsg[index])
-                                  : anotherUserChatBox(listMsg[index], index);
+                                  : anotherUserChatBox(listMsg[index], index,currModel);
                             },
                           );
                         } else {
@@ -465,7 +469,7 @@ class _ChatPageState extends State<ChatPage> {
                             onTap: () {
                               if (msgController.text.trim().isNotEmpty) {
                                 firebaseRepository.sendTextMessage(
-                                  toId: currModel!.userId!,
+                                  toId: currModel.userId!,
                                   msg: msgController.text.trim(),
                                 );
                                 msgController.clear();
@@ -523,7 +527,7 @@ class _ChatPageState extends State<ChatPage> {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Container(width: MediaQuery.of(context).size.width * 0.18),
+        Container(width: MediaQuery.of(context).size.width * 0.65),
         Flexible(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -625,11 +629,11 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  Widget anotherUserChatBox(MessageModel msgModel, int index) {
+  Widget anotherUserChatBox(MessageModel msgModel, int index,UserModel currModel) {
     if (msgModel.readAt == "") {
       firebaseRepository.updateReadStatus(
         msgId: msgModel.msgId!,
-        toId: currModel!.userId!,
+        toId: currModel.userId!,
         fromId: fromId,
       );
     }
@@ -640,7 +644,7 @@ class _ChatPageState extends State<ChatPage> {
 
     return Row(
       children: [
-        Container(width: MediaQuery.of(context).size.width * 0.02),
+        Container(width: MediaQuery.of(context).size.width * 0.77),
         Flexible(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
