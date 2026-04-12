@@ -602,7 +602,7 @@ class _ChatPageState extends State<ChatPage> {
                       Icon(
                         Icons.done_all_rounded,
                         color: msgModel.readAt != ""
-                            ? const Color(0xff8BE9FD) // cyan glow
+                            ? const Color(0xff8BE9FD)
                             : Colors.white.withOpacity(0.6),
                       ),
                       const SizedBox(width: 4),
