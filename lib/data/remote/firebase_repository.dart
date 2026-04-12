@@ -2,6 +2,7 @@ import 'package:chat_application/models/message_model.dart';
 import 'package:chat_application/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseRepository {
@@ -98,7 +99,7 @@ class FirebaseRepository {
   sendTextMessage({required String toId, required String msg}) async {
     String fromId = await getFromId();
     String chatId = getChatId(fromId: fromId, toId: toId);
-    var currTime = DateTime.now().microsecondsSinceEpoch.toString();
+    var currTime = DateTime.now().millisecondsSinceEpoch.toString();
     var msgModel = MessageModel(
       msgId: currTime,
       msg: msg,
@@ -106,12 +107,32 @@ class FirebaseRepository {
       fromId: fromId,
       toId: toId,
     );
-    await firestore
-        .collection(COLLECTION_CHATROOM)
-        .doc(chatId)
-        .collection(COLLECTION_MESSAGES)
-        .doc(currTime)
-        .set(msgModel.toDoc());
+    firestore.collection(COLLECTION_CHATROOM).doc(chatId).get().then((value) {
+      if (value.exists) {
+        firestore
+            .collection(COLLECTION_CHATROOM)
+            .doc(chatId)
+            .collection(COLLECTION_MESSAGES)
+            .doc(currTime)
+            .set(msgModel.toDoc());
+      } else {
+        //adding all chat ids in chat document fields
+        firestore
+            .collection(COLLECTION_CHATROOM)
+            .doc(chatId)
+            .set({
+              'ids': [fromId, toId],
+            })
+            .then(
+              (value) => firestore
+                  .collection(COLLECTION_CHATROOM)
+                  .doc(chatId)
+                  .collection(COLLECTION_MESSAGES)
+                  .doc(currTime)
+                  .set(msgModel.toDoc()),
+            );
+      }
+    });
   }
 
   sendImgMessage({required String toId, required String imgUrl}) async {
@@ -125,6 +146,7 @@ class FirebaseRepository {
       fromId: fromId,
       toId: toId,
       imgUrl: imgUrl,
+      msgType: 1,
     );
     await firestore
         .collection(COLLECTION_CHATROOM)
@@ -143,6 +165,61 @@ class FirebaseRepository {
         .collection(COLLECTION_CHATROOM)
         .doc(chatId)
         .collection(COLLECTION_MESSAGES)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getLiveChatContactStream({
+    required String fromId,
+  }) {
+    return firestore
+        .collection(COLLECTION_CHATROOM)
+        .where("ids", arrayContains: fromId)
+        .snapshots();
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserByUserId({
+    required String userId,
+  }) {
+    return firestore.collection(COLLECTION_USERS).doc(userId).get();
+  }
+
+  void updateReadStatus({
+    required String msgId,
+    required String toId,
+    required String fromId,
+  }) {
+    var currTime = DateTime.now().microsecondsSinceEpoch.toString();
+    var chatId = getChatId(fromId: fromId, toId: toId);
+    firestore
+        .collection(COLLECTION_CHATROOM)
+        .doc(chatId)
+        .collection(COLLECTION_MESSAGES)
+        .doc(msgId)
+        .update({"readAt": currTime});
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getLastMessage({
+    required String toId,
+    required String fromId,
+  }) {
+    var chatId = getChatId(fromId: fromId, toId: toId);
+    return firestore
+        .collection(COLLECTION_CHATROOM)
+        .doc(chatId)
+        .collection(COLLECTION_MESSAGES)
+        .orderBy("sentAt", descending: true)
+        .limit(1)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String,dynamic>>>getUnReadCountMsg({required String fromId, required String toId}) {
+    var chatId = getChatId(fromId: fromId, toId: toId);
+    return firestore
+        .collection(COLLECTION_CHATROOM)
+        .doc(chatId)
+        .collection(COLLECTION_MESSAGES)
+        .where("readAt", isEqualTo: "")
+        .where("fromId", isEqualTo: toId)
         .snapshots();
   }
 }
