@@ -198,16 +198,6 @@ class _ChatPageState extends State<ChatPage> {
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
-                                  const SizedBox(height: 3),
-                                  Text(
-                                    "Online",
-                                    style: TextStyle(
-                                      color: const Color(0xff8BE9FD)
-                                          .withOpacity(0.95),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
                                 ],
                               ),
                             ),
@@ -517,7 +507,6 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
-
   Widget userChatBox(MessageModel msgModel) {
     var time = ChatPage.dtFormat.format(
       DateTime.fromMillisecondsSinceEpoch(int.parse(msgModel.sentAt!)),
@@ -527,11 +516,11 @@ class _ChatPageState extends State<ChatPage> {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Container(width: MediaQuery.of(context).size.width * 0.65),
+        Container(width: MediaQuery.of(context).size.width * 0.16),
         Flexible(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [
@@ -541,34 +530,41 @@ class _ChatPageState extends State<ChatPage> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.10),
+                width: 1.2,
+              ),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(22),
                 topRight: Radius.circular(22),
                 bottomLeft: Radius.circular(22),
-                bottomRight: Radius.circular(8),
+                bottomRight: Radius.circular(6),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xff8BE9FD).withOpacity(0.50),
-                  blurRadius: 14,
-                  offset: const Offset(0,5),
+                  color: const Color(0xff8BE9FD).withOpacity(0.18),
+                  blurRadius: 12,
+                  offset: const Offset(0, 5),
                 ),
               ],
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                if (msgModel.msgType == 0)
-                  Text(
+                Flexible(
+                  child: msgModel.msgType == 0
+                      ? Text(
                     msgModel.msg ?? "",
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14.5,
                       fontWeight: FontWeight.w500,
+                      height: 1.3,
                     ),
                   )
-                else if (msgModel.msg != "")
-                  Column(
+                      : (msgModel.msg ?? "").isNotEmpty
+                      ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
@@ -578,48 +574,56 @@ class _ChatPageState extends State<ChatPage> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Text(
                         msgModel.msg ?? "",
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14.5,
                           fontWeight: FontWeight.w500,
+                          height: 1.3,
                         ),
                       ),
                     ],
                   )
-                else
-                  ClipRRect(
+                      : ClipRRect(
                     borderRadius: BorderRadius.circular(14),
                     child: Image.network(
                       msgModel.imgUrl ?? "",
                       fit: BoxFit.cover,
                     ),
                   ),
-                const SizedBox(height: 6),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.done_all_rounded,
-                        color: msgModel.readAt != ""
-                            ? const Color(0xff8BE9FD)
-                            : Colors.white.withOpacity(0.6),
+                ),
+                const SizedBox(width: 10),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Icon(
+                      Icons.done_all_rounded,
+                      color: msgModel.readAt != ""
+                          ? const Color(0xff8BE9FD)
+                          : Colors.white.withOpacity(0.55),
+                      size: 20,
+                      shadows: msgModel.readAt != ""
+                          ? [
+                        Shadow(
+                          color: const Color(0xff8BE9FD).withOpacity(0.45),
+                          blurRadius: 6,
+                        )
+                      ]
+                          : [],
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      time,
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.78),
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.w500,
                       ),
-                      const SizedBox(width: 4),
-                      Text(
-                        time,
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.78),
-                          fontSize: 10.5,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -633,7 +637,7 @@ class _ChatPageState extends State<ChatPage> {
     if (msgModel.readAt == "") {
       firebaseRepository.updateReadStatus(
         msgId: msgModel.msgId!,
-        toId: currModel.userId!,
+        toId: currModel!.userId!,
         fromId: fromId,
       );
     }
@@ -644,26 +648,25 @@ class _ChatPageState extends State<ChatPage> {
 
     return Row(
       children: [
-        Container(width: MediaQuery.of(context).size.width * 0.77),
         Flexible(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.white.withOpacity(0.10),
+                  Colors.white.withOpacity(0.11),
                   Colors.white.withOpacity(0.06),
                 ],
               ),
               border: Border.all(
                 color: Colors.white.withOpacity(0.10),
-                width: 1.1,
+                width: 1.2,
               ),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(22),
                 topRight: Radius.circular(22),
-                bottomLeft: Radius.circular(8),
+                bottomLeft: Radius.circular(6),
                 bottomRight: Radius.circular(22),
               ),
               boxShadow: [
@@ -673,20 +676,47 @@ class _ChatPageState extends State<ChatPage> {
                 ),
               ],
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (msgModel.msgType == 0)
-                  Text(
+                Container(
+                  width: 34,
+                  height: 34,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xff8BE9FD),
+                        Color(0xff5C6BC0),
+                      ],
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: CircleAvatar(
+                      backgroundColor: const Color(0xff132433),
+                      backgroundImage: currModel.profilePic != ""
+                          ? NetworkImage(currModel.profilePic!)
+                          : const AssetImage("assets/ic_user.png")
+                      as ImageProvider,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Flexible(
+                  child: msgModel.msgType == 0
+                      ? Text(
                     msgModel.msg ?? "",
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14.5,
                       fontWeight: FontWeight.w500,
+                      height: 1.3,
                     ),
                   )
-                else
-                  Column(
+                      : (msgModel.msg ?? "").isNotEmpty
+                      ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
@@ -696,26 +726,33 @@ class _ChatPageState extends State<ChatPage> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      if ((msgModel.msg ?? "").isNotEmpty) ...[
-                        const SizedBox(height: 8),
-                        Text(
-                          msgModel.msg ?? "",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.5,
-                            fontWeight: FontWeight.w500,
-                          ),
+                      const SizedBox(height: 6),
+                      Text(
+                        msgModel.msg ?? "",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.5,
+                          fontWeight: FontWeight.w500,
+                          height: 1.3,
                         ),
-                      ],
+                      ),
                     ],
+                  )
+                      : ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: Image.network(
+                      msgModel.imgUrl ?? "",
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                const SizedBox(height: 6),
-                Align(
-                  alignment: Alignment.bottomRight,
+                ),
+                const SizedBox(width: 8),
+                Padding(
+                  padding: const EdgeInsets.only(top: 2),
                   child: Text(
                     time,
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.60),
+                      color: Colors.white.withOpacity(0.65),
                       fontSize: 10.5,
                       fontWeight: FontWeight.w500,
                     ),
@@ -725,7 +762,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
         ),
-        Container(width: MediaQuery.of(context).size.width * 0.18),
+        Container(width: MediaQuery.of(context).size.width * 0.16),
       ],
     );
   }

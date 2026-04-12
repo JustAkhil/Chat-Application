@@ -151,10 +151,73 @@ class _AllMessagePageState extends State<AllMessagePage> {
               stream: firebaseRepository.getLiveChatContactStream(fromId: fromId),
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: Color(0xff8BE9FD),
-                      strokeWidth: 2.8,
+                  return Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.white.withOpacity(0.08),
+                            Colors.white.withOpacity(0.04),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.10),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.16),
+                            blurRadius: 18,
+                            offset: const Offset(0, 8),
+                          ),
+                          BoxShadow(
+                            color: const Color(0xff8BE9FD).withOpacity(0.10),
+                            blurRadius: 16,
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            height: 54,
+                            width: 54,
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xff8BE9FD),
+                                  Color(0xff5C6BC0),
+                                ],
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xff8BE9FD).withOpacity(0.28),
+                                  blurRadius: 16,
+                                ),
+                              ],
+                            ),
+                            child: const CircularProgressIndicator(
+                              strokeWidth: 2.8,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            "Loading chat...",
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.78),
+                              fontSize: 13.5,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }
@@ -288,78 +351,6 @@ class _AllMessagePageState extends State<AllMessagePage> {
                           userId: listUserId[index],
                         ),
                         builder: (_, userSnapShot) {
-                          if (userSnapShot.connectionState == ConnectionState.waiting) {
-                            return Center(
-                              child: Container(
-                                margin: const EdgeInsets.only(bottom: 12),
-                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(24),
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.white.withOpacity(0.08),
-                                      Colors.white.withOpacity(0.04),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  border: Border.all(
-                                    color: Colors.white.withOpacity(0.10),
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.16),
-                                      blurRadius: 18,
-                                      offset: const Offset(0, 8),
-                                    ),
-                                    BoxShadow(
-                                      color: const Color(0xff8BE9FD).withOpacity(0.10),
-                                      blurRadius: 16,
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      height: 54,
-                                      width: 54,
-                                      padding: const EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        gradient: const LinearGradient(
-                                          colors: [
-                                            Color(0xff8BE9FD),
-                                            Color(0xff5C6BC0),
-                                          ],
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: const Color(0xff8BE9FD).withOpacity(0.28),
-                                            blurRadius: 16,
-                                          ),
-                                        ],
-                                      ),
-                                      child: const CircularProgressIndicator(
-                                        strokeWidth: 2.8,
-                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 12),
-                                    Text(
-                                      "Loading chat...",
-                                      style: TextStyle(
-                                        color: Colors.white.withOpacity(0.78),
-                                        fontSize: 13.5,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }
-
                           if (userSnapShot.hasData) {
                             var currModel =
                             UserModel.fromDoc(userSnapShot.data!.data()!);
