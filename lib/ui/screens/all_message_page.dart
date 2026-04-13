@@ -351,7 +351,10 @@ class _AllMessagePageState extends State<AllMessagePage> {
                           userId: listUserId[index],
                         ),
                         builder: (_, userSnapShot) {
-                          if (userSnapShot.hasData) {
+                          if (!userSnapShot.hasData || userSnapShot.data?.data() == null) {
+                            return SizedBox(); // or placeholder UI
+                          }
+                          if (userSnapShot.hasData ) {
                             var currModel =
                             UserModel.fromDoc(userSnapShot.data!.data()!);
 
