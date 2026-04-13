@@ -351,12 +351,17 @@ class _AllMessagePageState extends State<AllMessagePage> {
                           userId: listUserId[index],
                         ),
                         builder: (_, userSnapShot) {
-                          if (!userSnapShot.hasData || userSnapShot.data?.data() == null) {
-                            return SizedBox(); // or placeholder UI
+                          if(userSnapShot.hasError){
+                            return SizedBox();
                           }
-                          if (userSnapShot.hasData ) {
+                          final userDoc = userSnapShot.data;
+                          final userData = userDoc?.data();
+                          if(userData == null){
+                            return SizedBox();
+                          }
+                          if (userSnapShot.hasData) {
                             var currModel =
-                            UserModel.fromDoc(userSnapShot.data!.data()!);
+                            UserModel.fromDoc(userData);
 
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 12),
