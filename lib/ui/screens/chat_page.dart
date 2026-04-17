@@ -177,7 +177,7 @@ class _ChatPageState extends State<ChatPage> {
                               child: CircleAvatar(
                                 radius: 23,
                                 backgroundColor: const Color(0xff132433),
-                                backgroundImage: currModel!.profilePic != ""
+                                backgroundImage: currModel.profilePic != ""
                                     ? NetworkImage(currModel.profilePic!)
                                     : const AssetImage("assets/ic_user.png")
                                 as ImageProvider,

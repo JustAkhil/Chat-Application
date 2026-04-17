@@ -246,4 +246,9 @@ class FirebaseRepository {
       "profilePic": profilePic,
     });
   }
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getUserStreamByUserId({
+    required String userId,
+  }) {
+    return firestore.collection(COLLECTION_USERS).doc(userId).snapshots();
+  }
 }

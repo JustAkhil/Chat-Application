@@ -357,8 +357,8 @@ class _AllMessagePageState extends State<AllMessagePage> {
                     padding: const EdgeInsets.fromLTRB(14, 16, 14, 100),
                     itemCount: listUserId.length,
                     itemBuilder: (_, index) {
-                      return FutureBuilder(
-                        future: firebaseRepository.getUsersByUserId(
+                      return StreamBuilder(
+                        stream: firebaseRepository.getUserStreamByUserId(
                           userId: listUserId[index],
                         ),
                         builder: (_, userSnapShot) {
