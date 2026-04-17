@@ -95,6 +95,17 @@ class _AllMessagePageState extends State<AllMessagePage> {
               itemBuilder: (_) {
                 return [
                   PopupMenuItem(
+                    onTap: () {
+                      Future.delayed(Duration.zero, () {
+                        Navigator.pushNamed(context, AppRoutes.myProfilePage);
+                      });
+                    },
+                    child: const Text(
+                      "My Profile",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  PopupMenuItem(
                     onTap: () async {
                       SharedPreferences prefs =
                       await SharedPreferences.getInstance();
@@ -347,7 +358,7 @@ class _AllMessagePageState extends State<AllMessagePage> {
                     itemCount: listUserId.length,
                     itemBuilder: (_, index) {
                       return FutureBuilder(
-                        future: firebaseRepository.getUserByUserId(
+                        future: firebaseRepository.getUsersByUserId(
                           userId: listUserId[index],
                         ),
                         builder: (_, userSnapShot) {
@@ -422,11 +433,13 @@ class _AllMessagePageState extends State<AllMessagePage> {
                                             ),
                                           ],
                                         ),
-                                        child: const CircleAvatar(
+                                        child: CircleAvatar(
                                           radius: 29,
                                           backgroundColor: Color(0xff132433),
-                                          backgroundImage:
-                                          AssetImage("assets/ic_user.png"),
+                                          backgroundImage:(currModel.profilePic != null &&
+                                              currModel.profilePic!.isNotEmpty)
+                                              ? NetworkImage(currModel.profilePic!)
+                                              : const AssetImage("assets/ic_user.png") as ImageProvider,
                                         ),
                                       ),
                                       const SizedBox(width: 14),

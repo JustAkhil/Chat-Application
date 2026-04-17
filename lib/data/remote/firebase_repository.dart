@@ -2,7 +2,6 @@ import 'package:chat_application/models/message_model.dart';
 import 'package:chat_application/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseRepository {
@@ -116,7 +115,6 @@ class FirebaseRepository {
             .doc(currTime)
             .set(msgModel.toDoc());
       } else {
-        //adding all chat ids in chat document fields
         firestore
             .collection(COLLECTION_CHATROOM)
             .doc(chatId)
@@ -177,7 +175,7 @@ class FirebaseRepository {
         .snapshots();
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getUserByUserId({
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUsersByUserId({
     required String userId,
   }) {
     return firestore.collection(COLLECTION_USERS).doc(userId).get();
@@ -212,7 +210,10 @@ class FirebaseRepository {
         .snapshots();
   }
 
-  Stream<QuerySnapshot<Map<String,dynamic>>>getUnReadCountMsg({required String fromId, required String toId}) {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUnReadCountMsg({
+    required String fromId,
+    required String toId,
+  }) {
     var chatId = getChatId(fromId: fromId, toId: toId);
     return firestore
         .collection(COLLECTION_CHATROOM)
@@ -221,5 +222,28 @@ class FirebaseRepository {
         .where("readAt", isEqualTo: "")
         .where("fromId", isEqualTo: toId)
         .snapshots();
+  }
+
+  Future<void> addProfileImg({
+    required String imgUrl,
+    required   String userId,
+  }) async {
+    try {
+      await firestore.collection(COLLECTION_USERS).doc(userId).update({
+        "profilePic": imgUrl,
+      });
+    }catch(e){
+      throw "Error:failed to update profile image";
+    }
+  }
+  Future<void> updateFullProfile({
+    required String userId,
+    required String name,
+    required String profilePic,
+  }) async {
+    await firestore.collection(COLLECTION_USERS).doc(userId).update({
+      "name": name,
+      "profilePic": profilePic,
+    });
   }
 }

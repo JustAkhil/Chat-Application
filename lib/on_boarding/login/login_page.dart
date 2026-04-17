@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:chat_application/constants/app_routes/app_routes.dart';
+import 'package:chat_application/models/user_model.dart';
 import 'package:chat_application/on_boarding/login/login_cubit/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,34 +58,22 @@ class _LoginPageState extends State<LoginPage> {
               Positioned(
                 top: -80,
                 left: -60,
-                child: _glowCircle(
-                  color: const Color(0xff4FC3F7),
-                  size: 220,
-                ),
+                child: _glowCircle(color: const Color(0xff4FC3F7), size: 220),
               ),
               Positioned(
                 top: 120,
                 right: -70,
-                child: _glowCircle(
-                  color: const Color(0xff7E57C2),
-                  size: 180,
-                ),
+                child: _glowCircle(color: const Color(0xff7E57C2), size: 180),
               ),
               Positioned(
                 bottom: -100,
                 left: 30,
-                child: _glowCircle(
-                  color: const Color(0xff26C6DA),
-                  size: 260,
-                ),
+                child: _glowCircle(color: const Color(0xff26C6DA), size: 260),
               ),
               Positioned(
                 bottom: 80,
                 right: -50,
-                child: _glowCircle(
-                  color: const Color(0xff5C6BC0),
-                  size: 170,
-                ),
+                child: _glowCircle(color: const Color(0xff5C6BC0), size: 170),
               ),
               SafeArea(
                 child: Center(
@@ -127,7 +116,9 @@ class _LoginPageState extends State<LoginPage> {
                                 offset: const Offset(0, 12),
                               ),
                               BoxShadow(
-                                color: const Color(0xff4FC3F7).withOpacity(0.08),
+                                color: const Color(
+                                  0xff4FC3F7,
+                                ).withOpacity(0.08),
                                 blurRadius: 28,
                                 spreadRadius: 2,
                               ),
@@ -153,7 +144,9 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: const Color(0xff8BE9FD).withOpacity(0.35),
+                                        color: const Color(
+                                          0xff8BE9FD,
+                                        ).withOpacity(0.35),
                                         blurRadius: 24,
                                         spreadRadius: 2,
                                       ),
@@ -253,15 +246,17 @@ class _LoginPageState extends State<LoginPage> {
                                         child: _buildButton(
                                           onTap: () {},
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: const [
                                               SizedBox(
                                                 height: 22,
                                                 width: 22,
-                                                child: CircularProgressIndicator(
-                                                  strokeWidth: 2.4,
-                                                  color: Colors.white,
-                                                ),
+                                                child:
+                                                    CircularProgressIndicator(
+                                                      strokeWidth: 2.4,
+                                                      color: Colors.white,
+                                                    ),
                                               ),
                                               SizedBox(width: 12),
                                               Text("Login"),
@@ -276,11 +271,14 @@ class _LoginPageState extends State<LoginPage> {
                                       width: double.infinity,
                                       child: _buildButton(
                                         onTap: () {
-                                          if (formKey.currentState!.validate()) {
-                                            context.read<LoginCubit>().loginUser(
-                                              email: emailController.text,
-                                              pass: passController.text,
-                                            );
+                                          if (formKey.currentState!
+                                              .validate()) {
+                                            context
+                                                .read<LoginCubit>()
+                                                .loginUser(
+                                                  email: emailController.text,
+                                                  pass: passController.text,
+                                                );
                                           }
                                         },
                                         child: const Text("Login"),
@@ -289,10 +287,18 @@ class _LoginPageState extends State<LoginPage> {
                                   },
                                   listener: (_, state) {
                                     if (state is LoginSuccessState) {
-                                      Navigator.pushReplacementNamed(
-                                        context,
-                                        AppRoutes.allMessagePage,
-                                      );
+                                      if (state.user.profilePic == "" ||
+                                          state.user.profilePic == null) {
+                                        Navigator.pushReplacementNamed(
+                                          context,
+                                          AppRoutes.setProfileImagePage,
+                                        );
+                                      } else {
+                                        Navigator.pushReplacementNamed(
+                                          context,
+                                          AppRoutes.allMessagePage,
+                                        );
+                                      }
                                       ScaffoldMessenger.of(context)
                                         ..hideCurrentSnackBar()
                                         ..showSnackBar(
@@ -336,7 +342,10 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(context, AppRoutes.signUp);
+                                        Navigator.pushNamed(
+                                          context,
+                                          AppRoutes.signUp,
+                                        );
                                       },
                                       child: const Text(
                                         "Sign Up",
@@ -372,29 +381,16 @@ class _LoginPageState extends State<LoginPage> {
   }) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: TextStyle(
-        color: Colors.white.withOpacity(0.38),
-        fontSize: 14,
-      ),
+      hintStyle: TextStyle(color: Colors.white.withOpacity(0.38), fontSize: 14),
       prefixIcon: Container(
         margin: const EdgeInsets.only(left: 10, right: 8),
-        child: Icon(
-          icon,
-          color: const Color(0xff8BE9FD),
-          size: 21,
-        ),
+        child: Icon(icon, color: const Color(0xff8BE9FD), size: 21),
       ),
-      prefixIconConstraints: const BoxConstraints(
-        minWidth: 45,
-        minHeight: 45,
-      ),
+      prefixIconConstraints: const BoxConstraints(minWidth: 45, minHeight: 45),
       suffixIcon: suffix,
       filled: true,
       fillColor: Colors.white.withOpacity(0.07),
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 18,
-      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(18),
         borderSide: BorderSide(
@@ -404,32 +400,20 @@ class _LoginPageState extends State<LoginPage> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(18),
-        borderSide: const BorderSide(
-          color: Color(0xff8BE9FD),
-          width: 1.5,
-        ),
+        borderSide: const BorderSide(color: Color(0xff8BE9FD), width: 1.5),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(18),
-        borderSide: const BorderSide(
-          color: Colors.redAccent,
-          width: 1.2,
-        ),
+        borderSide: const BorderSide(color: Colors.redAccent, width: 1.2),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(18),
-        borderSide: const BorderSide(
-          color: Colors.redAccent,
-          width: 1.5,
-        ),
+        borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
       ),
     );
   }
 
-  Widget _buildButton({
-    required Widget child,
-    required VoidCallback onTap,
-  }) {
+  Widget _buildButton({required Widget child, required VoidCallback onTap}) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -443,10 +427,7 @@ class _LoginPageState extends State<LoginPage> {
             gradient: const LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
-              colors: [
-                Color(0xff8BE9FD),
-                Color(0xff5C6BC0),
-              ],
+              colors: [Color(0xff8BE9FD), Color(0xff5C6BC0)],
             ),
             boxShadow: [
               BoxShadow(
@@ -517,10 +498,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _glowCircle({
-    required Color color,
-    required double size,
-  }) {
+  Widget _glowCircle({required Color color, required double size}) {
     return Container(
       height: size,
       width: size,

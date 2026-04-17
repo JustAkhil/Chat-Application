@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/remote/firebase_repository.dart';
 import '../../ui/screens/all_message_page.dart';
+import '../../ui/screens/set_profile.dart';
 import '../login/login_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -16,6 +17,8 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  FirebaseRepository firebaseRepository = FirebaseRepository.getInstance();
+
   @override
   void initState() {
     super.initState();
@@ -26,8 +29,20 @@ class _SplashPageState extends State<SplashPage> {
 
       Widget nextPage = LoginPage();
 
-      if (value != null && value != "") {
-        nextPage = AllMessagePage();
+      if (value != null && value.isNotEmpty) {
+
+        final userDoc = await firebaseRepository.getUsersByUserId(userId: value);
+        final data = userDoc.data();
+
+        if (data != null) {
+          String? profilePic = data["profilePic"];
+
+          if (profilePic == null || profilePic.isEmpty) {
+            nextPage = SetProfilePage();
+          } else {
+            nextPage = AllMessagePage();
+          }
+        }
       }
 
       if (!mounted) return;

@@ -82,19 +82,22 @@ class _AllContactPageState extends State<AllContactPage> {
             ),
           ),
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Contacts",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-                fontSize: 22,
-                letterSpacing: 0.4,
+        title: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Contacts",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 22,
+                  letterSpacing: 0.4,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       body: Container(
@@ -395,11 +398,13 @@ class _AllContactPageState extends State<AllContactPage> {
                                       ),
                                     ],
                                   ),
-                                  child: const CircleAvatar(
+                                  child: CircleAvatar(
                                     radius: 29,
                                     backgroundColor: Color(0xff132433),
-                                    backgroundImage:
-                                    AssetImage("assets/ic_user.png"),
+                                    backgroundImage:(currModel.profilePic != null &&
+                                        currModel.profilePic!.isNotEmpty)
+                                        ? NetworkImage(currModel.profilePic!)
+                                        : const AssetImage("assets/ic_user.png") as ImageProvider,
                                   ),
                                 ),
                                 const SizedBox(width: 14),
