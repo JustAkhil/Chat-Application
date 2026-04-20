@@ -18,7 +18,6 @@ class AllMessagePage extends StatefulWidget {
 class _AllMessagePageState extends State<AllMessagePage> {
   FirebaseRepository firebaseRepository = FirebaseRepository.getInstance();
   String fromId = "";
-
   @override
   void initState() {
     super.initState();
