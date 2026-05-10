@@ -729,7 +729,7 @@ class _ChatPageState extends State<ChatPage> {
     if (msgModel.readAt == "") {
       firebaseRepository.updateReadStatus(
         msgId: msgModel.msgId!,
-        toId: currModel!.userId!,
+        toId: currModel.userId!,
         fromId: fromId,
       );
     }
