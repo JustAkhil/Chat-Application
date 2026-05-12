@@ -175,7 +175,7 @@ class FirebaseRepository {
         .snapshots();
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getUsersByUserId({
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetailByUserId({
     required String userId,
   }) {
     return firestore.collection(COLLECTION_USERS).doc(userId).get();

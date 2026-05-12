@@ -20,7 +20,7 @@ class LoginCubit extends Cubit<LoginState> {
 
       String userId = await firebaseRepository.getFromId();
 
-      final userDoc = await firebaseRepository.getUsersByUserId(userId: userId);
+      final userDoc = await firebaseRepository.getUserDetailByUserId(userId: userId);
 
       UserModel user = UserModel.fromDoc(userDoc.data()!);
 

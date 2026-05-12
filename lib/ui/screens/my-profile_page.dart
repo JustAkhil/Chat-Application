@@ -42,7 +42,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   Future<void> getFromId() async {
     fromId = await firebaseRepository.getFromId();
-    userFuture = firebaseRepository.getUsersByUserId(userId: fromId!);
+    userFuture = firebaseRepository.getUserDetailByUserId(userId: fromId!);
     setState(() {});
   }
 

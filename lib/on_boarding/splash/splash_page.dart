@@ -31,7 +31,7 @@ class _SplashPageState extends State<SplashPage> {
 
       if (value != null && value.isNotEmpty) {
 
-        final userDoc = await firebaseRepository.getUsersByUserId(userId: value);
+        final userDoc = await firebaseRepository.getUserDetailByUserId(userId: value);
         final data = userDoc.data();
 
         if (data != null) {
