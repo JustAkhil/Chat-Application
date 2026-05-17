@@ -109,7 +109,7 @@ class _AllMessagePageState extends State<AllMessagePage> {
                       SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                       prefs.setString(FirebaseRepository.PREFS_USER_ID_KEY, "");
-                      Navigator.pushReplacementNamed(context, AppRoutes.login);
+                      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login,(routes)=>false);
                     },
                     child: const Text(
                       "Logout",

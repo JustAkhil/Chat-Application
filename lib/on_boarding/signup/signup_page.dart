@@ -370,7 +370,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                             textColor: Colors.black,
                                           ),
                                         );
-                                      Navigator.pop(context);
+                                      Navigator.pushReplacementNamed(context,AppRoutes.login);
                                     } else if (state is SignUpFailureState) {
                                       ScaffoldMessenger.of(context)
                                         ..hideCurrentSnackBar()
@@ -485,9 +485,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(
-                                          context,
-                                          AppRoutes.login,
+                                        Navigator.pushReplacementNamed(
+                                         context,AppRoutes.login
                                         );
                                       },
                                       child: const Text(

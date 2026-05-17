@@ -188,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                   validator: (value) {
-                                    if (value != null && value.isEmpty) {
+                                    if (value==null||value.isEmpty) {
                                       return "Enter Your Email";
                                     } else {
                                       return null;
@@ -342,7 +342,7 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(
+                                        Navigator.pushReplacementNamed(
                                           context,
                                           AppRoutes.signUp,
                                         );

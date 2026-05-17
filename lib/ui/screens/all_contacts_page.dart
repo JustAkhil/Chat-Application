@@ -344,7 +344,8 @@ class _AllContactPageState extends State<AllContactPage> {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(26),
                           onTap: () {
-                            Navigator.pushReplacementNamed(
+                            Navigator.pop(context);
+                            Navigator.pushNamed(
                               context,
                               AppRoutes.chatPage,
                               arguments: currModel,
