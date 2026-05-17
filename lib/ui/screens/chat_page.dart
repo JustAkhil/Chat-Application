@@ -180,7 +180,9 @@ class _ChatPageState extends State<ChatPage> {
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(50),
                                       onTap: () {
-                                        Navigator.pop(context);
+                                        Future.delayed(Duration(milliseconds: 300),(){
+                                          Navigator.pop(context);
+                                        });
                                       },
                                       child: Container(
                                         height: 42,

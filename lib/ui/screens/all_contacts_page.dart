@@ -49,8 +49,12 @@ class _AllContactPageState extends State<AllContactPage> {
               ),
             ),
             child: IconButton(
+              color: Colors.transparent,
               onPressed: () {
-                Navigator.pop(context);
+                Future.delayed(Duration(milliseconds: 300),(){
+                  Navigator.pop(context);
+                });
+
               },
               icon: const Icon(
                 Icons.arrow_back_ios_new_rounded,
@@ -344,12 +348,15 @@ class _AllContactPageState extends State<AllContactPage> {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(26),
                           onTap: () {
-                            Navigator.pop(context);
-                            Navigator.pushNamed(
-                              context,
-                              AppRoutes.chatPage,
-                              arguments: currModel,
-                            );
+                            Future.delayed(Duration(milliseconds: 300),(){
+                              Navigator.pop(context);
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.chatPage,
+                                arguments: currModel,
+                              );
+                            });
+
                           },
                           child: Container(
                             padding: const EdgeInsets.all(13),

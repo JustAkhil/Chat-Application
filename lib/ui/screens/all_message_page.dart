@@ -95,7 +95,7 @@ class _AllMessagePageState extends State<AllMessagePage> {
                 return [
                   PopupMenuItem(
                     onTap: () {
-                      Future.delayed(Duration.zero, () {
+                      Future.delayed(Duration(milliseconds: 300), () {
                         Navigator.pushNamed(context, AppRoutes.myProfilePage);
                       });
                     },
@@ -378,11 +378,13 @@ class _AllMessagePageState extends State<AllMessagePage> {
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(26),
                                 onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRoutes.chatPage,
-                                    arguments: currModel,
-                                  );
+                                  Future.delayed(Duration(milliseconds: 300), () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      AppRoutes.chatPage,
+                                      arguments: currModel,
+                                    );
+                                  });
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(13),
@@ -717,7 +719,10 @@ class _AllMessagePageState extends State<AllMessagePage> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           onPressed: () {
-            Navigator.pushNamed(context, AppRoutes.allContactsPage);
+            Future.delayed(Duration(milliseconds: 300,),(){
+              Navigator.pushNamed(context, AppRoutes.allContactsPage);
+            });
+
           },
           child: const Icon(
             Icons.add_rounded,

@@ -70,7 +70,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
             ),
             child: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Future.delayed(Duration(milliseconds: 300),(){
+                  Navigator.pop(context);
+                });
               },
               icon: const Icon(
                 Icons.arrow_back_ios_new_rounded,
@@ -487,9 +489,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                                             .camera_alt_rounded,
                                                         label: "Camera",
                                                         onTap: () async {
-                                                          Navigator.pop(
-                                                            context,
-                                                          );
+                                                          Future.delayed(Duration(milliseconds: 300),(){
+                                                            Navigator.pop(
+                                                              context,
+                                                            );
+                                                          });
                                                           await pickCropUploadImage(
                                                             ImageSource
                                                                 .camera,
@@ -501,9 +505,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                                             .photo_library_rounded,
                                                         label: "Gallery",
                                                         onTap: () async {
-                                                          Navigator.pop(
-                                                            context,
-                                                          );
+                                                          Future.delayed(Duration(milliseconds: 300),(){});
                                                           await pickCropUploadImage(
                                                             ImageSource
                                                                 .gallery,
