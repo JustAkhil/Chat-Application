@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../data/remote/firebase_message_background_handler.dart';
 import '../../../data/remote/firebase_repository.dart';
 import '../../../models/user_model.dart';
 import 'login_state.dart';
@@ -23,6 +24,8 @@ class LoginCubit extends Cubit<LoginState> {
       final userDoc = await firebaseRepository.getUserDetailByUserId(userId: userId);
 
       UserModel user = UserModel.fromDoc(userDoc.data()!);
+
+      await NotificationService().saveDeviceToken();
 
       emit(LoginSuccessState(user: user));
     } catch (e) {

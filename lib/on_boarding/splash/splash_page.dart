@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../data/remote/firebase_message_background_handler.dart';
 import '../../data/remote/firebase_repository.dart';
 import '../../ui/screens/all_message_page.dart';
 import '../../ui/screens/set_profile.dart';
@@ -30,6 +31,7 @@ class _SplashPageState extends State<SplashPage> {
       Widget nextPage = LoginPage();
 
       if (value != null && value.isNotEmpty) {
+        await NotificationService().saveDeviceToken();
 
         final userDoc = await firebaseRepository.getUserDetailByUserId(userId: value);
         final data = userDoc.data();

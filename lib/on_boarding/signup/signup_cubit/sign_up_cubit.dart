@@ -1,3 +1,4 @@
+import 'package:chat_application/data/remote/firebase_message_background_handler.dart';
 import 'package:chat_application/data/remote/firebase_repository.dart';
 import 'package:chat_application/models/user_model.dart';
 import 'package:chat_application/on_boarding/signup/signup_cubit/sign_up_state.dart';
@@ -10,6 +11,7 @@ class SignUpCubit extends Cubit<SignUpState>{
     emit(SignUpLoadingState());
     try{
       await firebaseRepository.createUser(user: user, pass: pass);
+      await NotificationService().saveDeviceToken();
       emit(SignUpSuccessState());
     }catch(e){
       emit(SignUpFailureState(errMsg: e.toString()));
